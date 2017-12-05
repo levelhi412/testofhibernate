@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- MySQL数据库用户名 -->
+    <property name="connection.username">root</property>
+
+    <!-- MySQL数据库密码 -->
+    <property name="connection.password">root</property>
+
+    <!-- MySQL数据库驱动 -->
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+
+    <!-- MySQL数据库连接URL -->
+    <property name="connection.url">jdbc:mysql://localhost:3306/hibernate?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</property>
+
+    <!-- 数据库方言 -->
+    <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+    <!-- 显示SQL语句 -->
+    <property name="show_sql">true</property>
+
+    <!-- 格式化SQL语句 -->
+    <property name="format_sql">true</property>
+
+    <!-- 根据需要创建数据库  -->
+    <property name="hbm2ddl.auto">update</property>
+
+    <!-- 果然这句话不加就报错啊 -->
+    <!-- Enable Hibernate's automatic session context management -->
+    <property name="current_session_context_class">thread</property>
+
+    <!-- DB schema will be updated if needed -->
+
+    <mapping class="com.levelhi.Goods"></mapping>
+
+
+
+  </session-factory>
+
+
+
+</hibernate-configuration>
