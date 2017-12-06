@@ -39,7 +39,7 @@ public class TestGoods {
      *  这里注意因为我用的是getCurrentSession，所以自动关闭session，
      *  这里如果用这个注意还要在hibernate.cfg.xml里面进行
      *  相应配置，而如果用openSession就要主动手动关闭session了。
-     *
+     *   多对多
      */
     @After
     public void destroy(){
