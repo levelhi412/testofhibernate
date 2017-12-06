@@ -3,6 +3,9 @@ package com.levelhi;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.Before;
@@ -26,14 +29,31 @@ public class TestGoods {
     private SessionFactory sessionFactory;
     private Session currentSession;
     private Transaction transaction;
+    private StandardServiceRegistry serviceRegistry;
 
-    @Before
+    /**
+     * 这个是老版本的写法，虽然还可以使用，但是好像已经很少用了，
+     * 其他版本有的根本就用不了了，所以还是使用最新的版本比较好。
+     *
+     */
+   /* @Before
     public void init(){
         configuration = new Configuration().configure();            //创建配置对象
         sessionFactory = configuration.buildSessionFactory();       //创建会话工厂
         currentSession = sessionFactory.getCurrentSession();        //开启会话
         transaction = currentSession.beginTransaction();            //开启事务
-    }
+    }*/
+
+   @Before
+   public void init(){
+       serviceRegistry = new StandardServiceRegistryBuilder().configure().build();
+       sessionFactory = new MetadataSources(serviceRegistry)
+               .buildMetadata().buildSessionFactory();
+       currentSession = sessionFactory.getCurrentSession();
+       transaction = currentSession.beginTransaction();
+
+   }
+
 
     /**
      *  这里注意因为我用的是getCurrentSession，所以自动关闭session，
@@ -50,7 +70,7 @@ public class TestGoods {
     @Test
     public void testGoods(){
         //生成对象
-        Goods goods = new Goods(2,"女朋友",27.7);
+        Goods goods = new Goods(4,"女朋友",27.7);
         //保存对象进数据库
         currentSession.save(goods);
 
