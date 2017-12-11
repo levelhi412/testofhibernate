@@ -1,5 +1,6 @@
 package com.levelhi;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -10,6 +11,11 @@ import org.hibernate.cfg.Configuration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.*;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Date;
 
 
 /**
@@ -67,13 +73,56 @@ public class TestGoods {
         sessionFactory.close();     //关闭会话工厂
     }
 
+
     @Test
-    public void testGoods(){
+    public void testSaveGoods() throws IOException {
+        //生成地址
+        Address address = new Address("888888","123456","长春");
+        //先获得照片文件
+        File file = new File("d:" + File.separator + "happy.jpg");
+        //获得照片文件的输入流
+        InputStream inputStream = new FileInputStream(file);
+        Blob image = Hibernate.getLobCreator(currentSession).createBlob(inputStream,inputStream.available());
         //生成对象
-        Goods goods = new Goods(4,"女朋友",27.7);
+        Goods goods = new Goods(4,"女朋友",27.7,new Date(),image);
+        goods.setAddress(address);
         //保存对象进数据库
         currentSession.save(goods);
 
     }
+
+
+    @Test
+    public void testWriteBlob() throws IOException {
+        //先获得照片文件
+        File file = new File("d:" + File.separator + "happy.jpg");
+        //获得照片文件的输入流
+        InputStream inputStream = new FileInputStream(file);
+        Blob image = Hibernate.getLobCreator(currentSession).createBlob(inputStream,inputStream.available());
+        //生成对象
+        Goods goods = new Goods(4,"女朋友",27.7,new Date(),image);
+        //保存对象进数据库
+        currentSession.save(goods);
+
+    }
+
+    @Test
+    public void testReadBlob() throws Exception {
+        Goods goods = (Goods)currentSession.get(Goods.class,17);
+        Blob image = goods.getPicture();
+        //获得照片的输入流
+        InputStream inputStream = image.getBinaryStream();
+        //创建输出流
+        File file = new File("d:" + File.separator + "test.jpg");
+        //获得输出流
+        OutputStream outputStream = new FileOutputStream(file);
+        //创建缓冲区
+        byte[] bytes = new byte[inputStream.available()];
+        inputStream.read(bytes);
+        outputStream.write(bytes);
+        inputStream.close();
+        outputStream.close();
+    }
+
 
 }

@@ -1,11 +1,14 @@
 package com.levelhi;
 
 import javax.persistence.*;
+import java.sql.Blob;
+import java.util.Date;
+import java.util.Arrays;
 
 /**
  * @Author:jiexuan
  * @Description:
- * @Date: Created in 15:50 2017/12/5
+ * @Date: Created in 9:54 2017/12/11
  * @Modified By:
  */
 @Entity
@@ -13,14 +16,25 @@ public class Goods {
     private int sid;
     private String name;
     private Double price;
+    private Date time;
+    private Blob picture;
+    @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride(name="postcode", column=@Column(name="postcade")),
+            @AttributeOverride(name="phone", column=@Column(name="phone", length=20)),
+            @AttributeOverride(name="address", column=@Column(name="address", length=20))
+    })
+    private Address address;
 
     public Goods() {
     }
 
-    public Goods(int sid, String name, Double price) {
+    public Goods(int sid, String name, Double price, Date time, Blob picture) {
         this.sid = sid;
         this.name = name;
         this.price = price;
+        this.time = time;
+        this.picture = picture;
     }
 
     @Id
@@ -54,6 +68,35 @@ public class Goods {
         this.price = price;
     }
 
+    @Basic
+    @Column(name = "time")
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    @Basic
+    @Column(name = "picture")
+    public Blob getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Blob picture) {
+        this.picture = picture;
+    }
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,8 +107,8 @@ public class Goods {
         if (sid != goods.sid) return false;
         if (name != null ? !name.equals(goods.name) : goods.name != null) return false;
         if (price != null ? !price.equals(goods.price) : goods.price != null) return false;
-
-        return true;
+        if (time != null ? !time.equals(goods.time) : goods.time != null) return false;
+        return picture != null ? picture.equals(goods.picture) : goods.picture == null;
     }
 
     @Override
@@ -73,6 +116,8 @@ public class Goods {
         int result = sid;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (time != null ? time.hashCode() : 0);
+        result = 31 * result + (picture != null ? picture.hashCode() : 0);
         return result;
     }
 }
