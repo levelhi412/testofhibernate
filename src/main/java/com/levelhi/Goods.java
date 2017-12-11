@@ -1,9 +1,6 @@
 package com.levelhi;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @Author:jiexuan
@@ -27,6 +24,7 @@ public class Goods {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "sid")
     public int getSid() {
         return sid;
