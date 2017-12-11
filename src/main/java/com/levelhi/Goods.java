@@ -120,4 +120,16 @@ public class Goods {
         result = 31 * result + (picture != null ? picture.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "sid=" + sid +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", time=" + time +
+                ", picture=" + picture +
+                ", address=" + address +
+                '}';
+    }
 }

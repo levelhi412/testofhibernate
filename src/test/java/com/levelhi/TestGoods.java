@@ -124,5 +124,29 @@ public class TestGoods {
         outputStream.close();
     }
 
+    @Test
+    public void testGetGoods(){
+        Goods goods = currentSession.get(Goods.class,20);
+        System.out.println(goods);
+    }
+
+    @Test
+    public void testLoadGoods(){
+        Goods goods = currentSession.load(Goods.class,20);
+        System.out.println(goods);
+    }
+
+    @Test
+    public void testUpdateGoods(){
+        Goods goods = currentSession.get(Goods.class,20);
+        goods.setName("update");
+        currentSession.update(goods);
+    }
+
+    @Test
+    public void testDeleteGoods(){
+        Goods goods = currentSession.get(Goods.class,11);
+        currentSession.delete(goods);
+    }
 
 }
